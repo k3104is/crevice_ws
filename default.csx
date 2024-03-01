@@ -45,6 +45,7 @@ var Browser = When(ctx =>
 {
     return ctx.ForegroundWindow.ModuleName == "chrome.exe" ||
            ctx.ForegroundWindow.ModuleName == "firefox.exe" ||
+           ctx.ForegroundWindow.ModuleName == "Code.exe" ||
           // Firefox's ModuleName may be differ from normal ones in case waiting for restarting after it's upgrading.
           // In that case, it's name starts with `moz` and has the class name "MozillaWindowClass".
           (ctx.ForegroundWindow.ModuleName.StartsWith("moz") &&
@@ -64,12 +65,8 @@ On(Keys.WheelUp).
 Do(ctx =>
 {
     SendInput.Multiple().
-    ExtendedKeyDown(Keys.ControlKey).
-    ExtendedKeyDown(Keys.ShiftKey).
-    ExtendedKeyDown(Keys.Tab).
-    ExtendedKeyUp(Keys.Tab).
-    ExtendedKeyUp(Keys.ShiftKey).
-    ExtendedKeyUp(Keys.ControlKey).
+    ExtendedKeyDown(Keys.PageUp).
+    ExtendedKeyUp(Keys.PageUp).
     Send(); // Previous tab
 });
 
@@ -79,10 +76,8 @@ On(Keys.WheelDown).
 Do(ctx =>
 {
     SendInput.Multiple().
-    ExtendedKeyDown(Keys.ControlKey).
-    ExtendedKeyDown(Keys.Tab).
-    ExtendedKeyUp(Keys.Tab).
-    ExtendedKeyUp(Keys.ControlKey).
+    ExtendedKeyDown(Keys.PageDown).
+    ExtendedKeyUp(Keys.PageDown).
     Send(); // Next tab
 });
 
@@ -92,8 +87,12 @@ On(Keys.MoveUp).
 Do(ctx =>
 {
     SendInput.Multiple().
-    ExtendedKeyDown(Keys.Home).
-    ExtendedKeyUp(Keys.Home).
+    ExtendedKeyDown(Keys.ControlKey).
+    ExtendedKeyDown(Keys.ShiftKey).
+    ExtendedKeyDown(Keys.T).
+    ExtendedKeyUp(Keys.T).
+    ExtendedKeyUp(Keys.ShiftKey).
+    ExtendedKeyUp(Keys.ControlKey).
     Send(); // Scroll to top
 });
 
@@ -103,8 +102,10 @@ On(Keys.MoveDown).
 Do(ctx =>
 {
     SendInput.Multiple().
-    ExtendedKeyDown(Keys.End).
-    ExtendedKeyUp(Keys.End).
+    ExtendedKeyDown(Keys.ControlKey).
+    ExtendedKeyDown(Keys.W).
+    ExtendedKeyUp(Keys.W).
+    ExtendedKeyUp(Keys.ControlKey).
     Send(); // Scroll to bottom
 });
 
@@ -114,10 +115,12 @@ On(Keys.MoveLeft).
 Do(ctx =>
 {
     SendInput.Multiple().
-    ExtendedKeyDown(Keys.Menu).
-    ExtendedKeyDown(Keys.Left).
-    ExtendedKeyUp(Keys.Left).
-    ExtendedKeyUp(Keys.Menu).
+    ExtendedKeyDown(Keys.ControlKey).
+    ExtendedKeyDown(Keys.ShiftKey).
+    ExtendedKeyDown(Keys.Tab).
+    ExtendedKeyUp(Keys.Tab).
+    ExtendedKeyUp(Keys.ShiftKey).
+    ExtendedKeyUp(Keys.ControlKey).
     Send(); // Go back
 });
 
@@ -127,33 +130,35 @@ On(Keys.MoveRight).
 Do(ctx =>
 {
     SendInput.Multiple().
-    ExtendedKeyDown(Keys.Menu).
-    ExtendedKeyDown(Keys.Right).
-    ExtendedKeyUp(Keys.Right).
-    ExtendedKeyUp(Keys.Menu).
+    ExtendedKeyDown(Keys.ControlKey).
+    ExtendedKeyDown(Keys.Tab).
+    ExtendedKeyUp(Keys.Tab).
+    ExtendedKeyUp(Keys.ControlKey).
     Send(); // Go next
 });
 
 Browser.
 On(Keys.RButton).
-On(Keys.MoveUp, Keys.MoveDown).
+On(Keys.MoveLeft, Keys.MoveUp).
 Do(ctx =>
 {
     SendInput.Multiple().
-    ExtendedKeyDown(Keys.F5).
-    ExtendedKeyUp(Keys.F5).
+    ExtendedKeyDown(Keys.ControlKey).
+    ExtendedKeyDown(Keys.Home).
+    ExtendedKeyUp(Keys.Home).
+    ExtendedKeyUp(Keys.ControlKey).
     Send(); // Reload tab
 });
 
 Browser.
 On(Keys.RButton).
-On(Keys.MoveDown, Keys.MoveRight).
+On(Keys.MoveLeft, Keys.MoveDown).
 Do(ctx =>
 {
     SendInput.Multiple().
     ExtendedKeyDown(Keys.ControlKey).
-    ExtendedKeyDown(Keys.W).
-    ExtendedKeyUp(Keys.W).
+    ExtendedKeyDown(Keys.End).
+    ExtendedKeyUp(Keys.End).
     ExtendedKeyUp(Keys.ControlKey).
     Send(); // Close tab
 });
